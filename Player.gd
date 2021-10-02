@@ -15,3 +15,4 @@ func _physics_process(_delta):
 		_speed *= 0.5
 	velocity = direction * _speed
 	move_and_slide(velocity)
+	position = position.round() # Faking integer precision
