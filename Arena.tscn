@@ -16,7 +16,7 @@ b = Vector2( 140, 0 )
 
 [node name="Arena" type="Node2D"]
 
-[node name="Arena" type="KinematicBody2D" parent="."]
+[node name="Arena" type="StaticBody2D" parent="."]
 position = Vector2( 248, 168 )
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Arena"]
