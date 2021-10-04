@@ -5,11 +5,11 @@ onready var bullet_spawn_pos = $ArenaCenter/BulletSpawn
 onready var bullet_spawn_dir = $ArenaCenter/BulletSpawn/Dir
 onready var timer = $Timer
 
-export var bullet_spawn_speed := 0.4 setget _timer_set
+export var bullet_delay := 0.4 setget _timer_set
 export var bullet_count := 5
 export var bullet_speed := 100
-export var bullet_speed_angle := 0
-export var bullet_spawn_spread := PI/2
+export var bullet_angle := 0.0
+export var bullet_spread := PI/2
 
 export var pattern_speed := 1.0
 
@@ -31,7 +31,7 @@ func _timer_set(bullet_spawn_speed):
 
 # Spawn a bullet wave with a slightly different rotation
 func _on_Timer_timeout() -> void:
-	var rotation_difference = bullet_spawn_spread / (bullet_count - 1)
+	var rotation_difference = bullet_spread / (bullet_count - 1)
 	var spawn_vector = bullet_spawn_pos.global_position.direction_to(bullet_spawn_dir.global_position)
 	for i in range(0, bullet_count):
 		var movement = spawn_vector.rotated(
@@ -41,7 +41,7 @@ func _on_Timer_timeout() -> void:
 			bullet_spawn_pos.global_position,
 			movement,
 			bullet_speed * pattern_speed,
-			bullet_speed_angle
+			bullet_angle
 		)
 
 
