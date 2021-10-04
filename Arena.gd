@@ -35,7 +35,7 @@ func _on_Timer_timeout() -> void:
 	var spawn_vector = bullet_spawn_pos.global_position.direction_to(bullet_spawn_dir.global_position)
 	for i in range(0, bullet_count):
 		var movement = spawn_vector.rotated(
-			rotation_difference * i - PI/4
+			rotation_difference * i - PI/3
 		)
 		bullet_spawner_area.spawn_bullet(
 			bullet_spawn_pos.global_position,
