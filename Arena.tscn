@@ -1,6 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://BulletHellSpawner.gd" type="Script" id=2]
+[ext_resource path="res://Arena.gd" type="Script" id=3]
+[ext_resource path="res://bullet/b1.png" type="Texture" id=4]
+[ext_resource path="res://bullet/b3.png" type="Texture" id=5]
+[ext_resource path="res://bullet/b2.png" type="Texture" id=6]
 
 [sub_resource type="SegmentShape2D" id=1]
 b = Vector2( 0, 140 )
@@ -14,15 +19,120 @@ b = Vector2( 140, 0 )
 [sub_resource type="SegmentShape2D" id=4]
 b = Vector2( 140, 0 )
 
+[sub_resource type="Animation" id=5]
+resource_name = "main"
+length = 8.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("ArenaCenter:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4, 6 ),
+"transitions": PoolRealArray( 0.5, 0.5, 0.5, 0.5 ),
+"update": 0,
+"values": [ 0.0, 45.0, 0.0, -45.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ArenaCenter/BulletSpawn:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2, 4, 6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -145 ), Vector2( 0, -125 ), Vector2( 0, -100 ), Vector2( 0, -125 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("ArenaCenter/BulletSpawn:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 2, 6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 20.0, -20.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:bullet_speed")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 100, 50 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:bullet_spawn_spread")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 90, 75 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath(".:bullet_count")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 5 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:bullet_spawn_speed")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.4, 0.3 ]
+}
+
 [node name="Arena" type="Node2D"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ]
+}
+bullet_spawn_speed = 0.4
+
+[node name="BulletBounds" type="ReferenceRect" parent="."]
+visible = false
+margin_left = 174.0
+margin_top = 94.0
+margin_right = 466.0
+margin_bottom = 386.0
+editor_only = false
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
 
 [node name="Arena" type="StaticBody2D" parent="."]
 position = Vector2( 248, 168 )
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Arena"]
-margin_left = -1.0
 margin_top = -1.0
-margin_right = 145.0
+margin_right = 146.0
 margin_bottom = 145.0
 border_color = Color( 0, 1, 0, 1 )
 border_width = 6.0
@@ -49,3 +159,55 @@ shape = SubResource( 4 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 320, 240 )
+collision_layer = 3
+collision_mask = 3
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.345172
+autostart = true
+
+[node name="BulletSpawnerArea" type="Node2D" parent="."]
+script = ExtResource( 2 )
+frames = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ) ]
+
+[node name="SharedArea" type="Area2D" parent="BulletSpawnerArea"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="BulletAnimation" type="AnimationPlayer" parent="."]
+anims/main = SubResource( 5 )
+
+[node name="ArenaCenter" type="Position2D" parent="."]
+position = Vector2( 320, 240 )
+__meta__ = {
+"_gizmo_extents_": 8.0
+}
+
+[node name="BulletSpawn" type="Position2D" parent="ArenaCenter"]
+position = Vector2( 0, -145 )
+__meta__ = {
+"_edit_group_": true,
+"_gizmo_extents_": 5.0
+}
+
+[node name="Dir" type="RayCast2D" parent="ArenaCenter/BulletSpawn"]
+position = Vector2( 0, 1 )
+cast_to = Vector2( 0, 1 )
+
+[node name="DirVisual" type="Line2D" parent="ArenaCenter/BulletSpawn/Dir"]
+points = PoolVector2Array( 0, 0, 0, 13 )
+width = 3.0
+default_color = Color( 1, 1, 1, 1 )
+
+[node name="HitCount" type="Label" parent="."]
+margin_left = 296.0
+margin_top = 328.0
+margin_right = 338.0
+margin_bottom = 342.0
+text = "Hits: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="hit" from="Player" to="." method="_on_Player_hit"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

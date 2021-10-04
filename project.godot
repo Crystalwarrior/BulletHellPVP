@@ -8,9 +8,20 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "Bullet",
+"language": "GDScript",
+"path": "res://Bullet.gd"
+} ]
+_global_script_class_icons={
+"Bullet": ""
+}
+
 [application]
 
 config/name="BulletHellPVP"
+run/main_scene="res://Arena.tscn"
 config/icon="res://icon.png"
 
 [display]
