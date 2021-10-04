@@ -8,9 +8,10 @@ onready var timer = $Timer
 export var bullet_spawn_speed := 0.4 setget _timer_set
 export var bullet_count := 5
 export var bullet_speed := 100
-export var bullet_spawn_spread := 90
+export var bullet_speed_angle := 0
+export var bullet_spawn_spread := PI/2
 
-export var pattern_speed := 0.5
+export var pattern_speed := 1.0
 
 var boundary_rect: Rect2
 var hits = 0
@@ -34,9 +35,14 @@ func _on_Timer_timeout() -> void:
 	var spawn_vector = bullet_spawn_pos.global_position.direction_to(bullet_spawn_dir.global_position)
 	for i in range(0, bullet_count):
 		var movement = spawn_vector.rotated(
-			deg2rad((rotation_difference * i) - 45)
+			rotation_difference * i - PI/4
 		)
-		bullet_spawner_area.spawn_bullet(bullet_spawn_pos.global_position, movement, bullet_speed * pattern_speed)
+		bullet_spawner_area.spawn_bullet(
+			bullet_spawn_pos.global_position,
+			movement,
+			bullet_speed * pattern_speed,
+			bullet_speed_angle
+		)
 
 
 func _on_Player_hit(bullet_id):

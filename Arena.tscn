@@ -81,7 +81,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 4 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 90, 75 ]
+"values": [ 1.571, 1.047 ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath(".:bullet_count")
@@ -163,6 +163,7 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="Timer" type="Timer" parent="."]
+process_mode = 0
 wait_time = 0.345172
 autostart = true
 
@@ -186,7 +187,6 @@ __meta__ = {
 [node name="BulletSpawn" type="Position2D" parent="ArenaCenter"]
 position = Vector2( 0, -145 )
 __meta__ = {
-"_edit_group_": true,
 "_gizmo_extents_": 5.0
 }
 

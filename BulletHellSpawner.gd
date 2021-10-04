@@ -49,6 +49,7 @@ func _physics_process(delta: float) -> void:
 		
 		bullet.animation_lifetime += delta
 		bullet.lifetime += delta
+		bullet.movement_vector = bullet.movement_vector.rotated(bullet.movement_rotation * delta)
 	
 	for bullet in bullets_queued_for_destruction:
 		Physics2DServer.free_rid(bullet.shape_id)
@@ -77,10 +78,11 @@ func set_bounding_box(box: Rect2) -> void:
 	bounding_box = box
 
 # Register a new bullet in the array with the optimization logic
-func spawn_bullet(i_position: Vector2, i_movement: Vector2, speed := 200) -> void:
+func spawn_bullet(i_position: Vector2, i_movement: Vector2, speed := 200, movement_rotation := 0.0) -> void:
 	
 	var bullet : Bullet = Bullet.new()
 	bullet.movement_vector = i_movement
+	bullet.movement_rotation = movement_rotation
 	bullet.speed = speed
 	bullet.current_position = i_position
 	
