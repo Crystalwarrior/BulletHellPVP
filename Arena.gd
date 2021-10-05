@@ -17,15 +17,17 @@ var boundary_rect: Rect2
 var hits = 0
 
 func _ready() -> void:
+	_timer_set(bullet_delay)
 	# Here we register the boundary
 	boundary_rect = Rect2(
 		$BulletBounds.rect_position,
 		$BulletBounds.rect_size
 	)
 	bullet_spawner_area.set_bounding_box(boundary_rect)
-	$BulletAnimation.play("main", -1, pattern_speed)
+#	$BulletAnimation.play("main", -1, pattern_speed)
 
 func _timer_set(bullet_spawn_speed):
+	bullet_delay = bullet_spawn_speed
 	if timer:
 		timer.wait_time = bullet_spawn_speed / pattern_speed
 
@@ -46,13 +48,9 @@ func _on_Timer_timeout() -> void:
 
 
 func _on_Player_hit(bullet_id):
+	if $Player.invincibility > 0:
+		return
 	bullet_spawner_area.delete_bullet(bullet_id)
 	hits += 1
 	$HitCount.text = "Hits: " + str(hits)
-	$Player.modulate.a = 0.3
-	yield(get_tree().create_timer(.1), "timeout")
-	$Player.modulate.a = 0.7
-	yield(get_tree().create_timer(.1), "timeout")
-	$Player.modulate.a = 0.3
-	yield(get_tree().create_timer(.1), "timeout")
-	$Player.modulate.a = 1.0
+	$Player.start_invincibility(2)

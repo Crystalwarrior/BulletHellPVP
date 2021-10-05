@@ -125,8 +125,9 @@ script = ExtResource( 3 )
 __meta__ = {
 "_edit_horizontal_guides_": [  ]
 }
-bullet_delay = 0.4
+bullet_delay = 2.0
 bullet_count = 8
+bullet_speed = 20
 bullet_spread = 2.094
 
 [node name="BulletBounds" type="ReferenceRect" parent="."]
@@ -137,7 +138,6 @@ margin_right = 466.0
 margin_bottom = 386.0
 editor_only = false
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
